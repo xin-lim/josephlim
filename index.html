@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joseph Lim - Personal Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Updated Banner Section */
+        .banner {
+            position: relative;
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Changed to semi-transparent black */
+            z-index: 1;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Update profile image to ensure it's above the video */
+        .profile-img {
+            position: relative;
+            z-index: 2;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin-bottom: 20px;
+        }
+
+        .titles {
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2563eb;
+        }
+
+        /* Hobbies Section */
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .hobby-card {
+            position: relative;
+            height: 300px;
+            padding: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .hobby-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.8) 0%,
+                rgba(0, 0, 0, 0.4) 50%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            z-index: 1;
+        }
+
+        .hobby-card video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            filter: grayscale(100%) brightness(150%);
+            transition: filter 0.3s ease;
+        }
+
+        .hobby-card:hover video {
+            filter: grayscale(0%) brightness(100%);
+        }
+
+        .hobby-card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hobby-card i {
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .hobby-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .hobby-card p {
+            font-size: 1.1em;
+            line-height: 1.4;
+        }
+
+        /* Education Section */
+        .education-card {
+            position: relative;
+            background: transparent;
+            padding: 40px;
+            text-align: center;
+            overflow: hidden;
+            min-height: 400px; /* Increased height for banner style */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .education-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .education-background img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, filter 0.3s ease;
+            filter: grayscale(100%) brightness(150%);
+        }
+
+        .education-card:hover .education-background img {
+            filter: grayscale(0%) brightness(100%);
+        }
+
+        .education-background img.active {
+            opacity: 1;
+        }
+
+        .education-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .education-content {
+            position: relative;
+            z-index: 2;
+            opacity: 0; /* Hide content by default */
+            transform: translateY(20px); /* Slight upward animation */
+            transition: all 0.5s ease;
+        }
+
+        .education-card:hover .education-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .education-content i {
+            font-size: 3.5em; /* Increased icon size */
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .education-content h3 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .education-content p {
+            font-size: 1.5em;
+            line-height: 1.6;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            position: relative;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .project-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .project-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease;
+        }
+
+        .project-card:hover .project-background img {
+            filter: grayscale(0%) brightness(100%);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+
+        .project-info {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .project-info h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .project-info p {
+            font-size: 1.1em;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .project-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 2px solid white;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-links a:hover {
+            background: white;
+            color: #333;
+        }
+
+        .project-links i {
+            font-size: 1.2em;
+        }
+
+        /* Social Media Section */
+        .social-media {
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .social-icons {
+            margin: 20px 0;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 2em;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #3b82f6;
+        }
+
+        /* Navigation Menu Styles */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-list a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-list a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Adjust banner padding to account for fixed nav */
+        .banner {
+            padding-top: 140px;
+        }
+
+        /* Mobile menu styles */
+        .menu-toggle {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                right: 1rem;
+                top: 1rem;
+            }
+
+            .nav-list {
+                display: none;
+                flex-direction: column;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .nav-list.active {
+                display: flex;
+            }
+        }
+
+        /* Make education section full width */
+        #education {
+            padding: 0; /* Remove default section padding */
+            max-width: none; /* Remove max-width constraint */
+            width: 100%; /* Ensure full width */
+        }
+    </style>
+</head>
+<body>
+    <!-- Add this right after <body> tag -->
+    <nav class="nav-menu">
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-list">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#hobbies">Hobbies</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Updated Banner Section HTML -->
+    <div class="banner" id="home">
+        <div class="video-background">
+            <video autoplay muted loop>
+                <source src="215697_tiny.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="overlay"></div>
+        <div class="banner-content">
+            <img src="伊布.jpg" alt="Joseph Lim" class="profile-img">
+            <h1>Joseph Lim</h1>
+            <div class="titles">
+                <p>Software Developer | Content Creator | Designer</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hobbies Section -->
+    <section id="hobbies">
+        <h2 class="section-title">My Hobbies</h2>
+        <div class="hobbies-grid">
+            <div class="hobby-card">
+                <video autoplay muted loop>
+                    <source src="painting video.mp4" type="video/mp4">
+                </video>
+                <div class="hobby-card-content">
+                    <i class="fas fa-palette"></i>
+                    <h3>Painting</h3>
+                    <p>Expressing creativity through colors and canvas</p>
+                </div>
+            </div>
+            <div class="hobby-card">
+                <video autoplay muted loop>
+                    <source src="reading video.mp4" type="video/mp4">
+                </video>
+                <div class="hobby-card-content">
+                    <i class="fas fa-book"></i>
+                    <h3>Reading</h3>
+                    <p>Exploring new worlds through literature</p>
+                </div>
+            </div>
+            <div class="hobby-card">
+                <video autoplay muted loop>
+                    <source src="music video.mp4" type="video/mp4">
+                </video>
+                <div class="hobby-card-content">
+                    <i class="fas fa-music"></i>
+                    <h3>Music</h3>
+                    <p>Enjoying various genres and creating playlists</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education">
+        <h2 class="section-title">Education</h2>
+        <div class="education-card">
+            <div class="education-background">
+                <img src="銮中1.jpg" alt="Kluang Chong Hwa High School 1">
+                <img src="銮中2.jpg" alt="Kluang Chong Hwa High School 2">
+                <img src="銮中3.jpg" alt="Kluang Chong Hwa High School 3">
+            </div>
+            <div class="education-overlay"></div>
+            <div class="education-content">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>Kluang Chong Hwa Chinese School</h3>
+                <p>Junior Two (1) Student</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title">Personal Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-background">
+                    <img src="project1-preview.png" alt="Project 1 Preview">
+                </div>
+                <div class="project-overlay"></div>
+                <div class="project-info">
+                    <h3>Firebase Chat App</h3>
+                    <p>Simple student project, to learn how to use firebase to create chat app.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/xin-lim/Firebase_ChatApp" target="_blank">
+                            <i class="fab fa-github"></i>
+                            View Code
+                        </a>
+                        <a href="https://ai2.appinventor.mit.edu/#4935710390943744" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            Live Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-background">
+                    <img src="project2-preview.png" alt="Project 2 Preview">
+                </div>
+                <div class="project-overlay"></div>
+                <div class="project-info">
+                    <h3>YOLO Real Time Tracking</h3>
+                    <p>Simple student project, to learn how to use Python to create YOLO Real Time Tracking project.</p>
+                    <div class="project-links">
+                        <a href="https://github.com/xin-lim/YOLO_REAL_TIME_TRACKING" target="_blank">
+                            <i class="fab fa-github"></i>
+                            View Code
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            Live Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <footer class="social-media" id="contact">
+        <h2>Let's Connect!</h2>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/profile.php?id=100095375524511&mibextid=ZbWKwL"  target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/josephlimyuxin?igsh=YzljYTk1ODg3Zg==" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/xin-lim" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="https://wa.link/2v8a63" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+        <p>Feel free to reach out and connect with me on social media!</p>
+    </footer>
+
+    <!-- Add this before closing body tag -->
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.nav-list').classList.toggle('active');
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu after clicking
+                document.querySelector('.nav-list').classList.remove('active');
+            });
+        });
+
+        // Hide/show navigation on scroll
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav-menu');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll <= 0) {
+                nav.style.transform = 'translateY(0)';
+                return;
+            }
+            
+            if (currentScroll > lastScroll) {
+                // Scrolling down
+                nav.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                nav.style.transform = 'translateY(0)';
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Video playback control for hobby cards
+        document.querySelectorAll('.hobby-card').forEach(card => {
+            const video = card.querySelector('video');
+            
+            // Pause video initially
+            video.pause();
+            
+            // Play on hover
+            card.addEventListener('mouseenter', () => {
+                video.play();
+            });
+            
+            // Pause when not hovering
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+                // Optionally reset to first frame
+                video.currentTime = 0;
+            });
+        });
+
+        // Education background slider
+        const educationCard = document.querySelector('.education-card');
+        const backgroundImages = document.querySelectorAll('.education-background img');
+        let currentImageIndex = 0;
+        let sliderInterval;
+
+        function startSlider() {
+            sliderInterval = setInterval(() => {
+                backgroundImages[currentImageIndex].classList.remove('active');
+                currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
+                backgroundImages[currentImageIndex].classList.add('active');
+            }, 2000); // Change image every 2 seconds
+        }
+
+        function stopSlider() {
+            clearInterval(sliderInterval);
+        }
+
+        // Show first image initially
+        backgroundImages[0].classList.add('active');
+
+        // Start/stop slider on hover
+        educationCard.addEventListener('mouseenter', startSlider);
+        educationCard.addEventListener('mouseleave', () => {
+            stopSlider();
+            // Reset to first image when mouse leaves
+            backgroundImages.forEach(img => img.classList.remove('active'));
+            currentImageIndex = 0;
+            backgroundImages[0].classList.add('active');
+        });
+    </script>
+</body>
+</html>
